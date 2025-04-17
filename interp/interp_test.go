@@ -2901,9 +2901,13 @@ done <<< 2`,
 		"shopt -s nullglob; touch existing-1; echo missing-* existing-*",
 		"existing-1\n",
 	},
-	// Extended globbing is not supported
-	{"ls ab+(2|3).txt", "extended globbing is not supported\nexit status 1 #JUSTERR"},
-	{"echo *(/)", "extended globbing is not supported\nexit status 1 #JUSTERR"},
+
+	{"shopt -s extglob; touch foobar; ls @(foo|bar)", "TODO"}, // matches either "foo" or "bar", but not "foobar"
+	{"shopt -s extglob; touch foobar; ls ?(foo)bar", "TODO"},  // matches "bar" or "foobar"
+	{"shopt -s extglob; touch foobar; ls *(foo)bar", "TODO"},  // matches "bar", "foobar", "foofoobar", etc.
+	{"shopt -s extglob; touch foobar; ls +(foo)bar", "TODO"},  // matches "foobar", "foofoobar", etc., but not "bar"
+	{"shopt -s extglob; touch foobar; ls !(foo|bar)", "TODO"}, // matches anything except "foo" or "bar"
+
 	// Ensure that setting nullglob does not return invalid globs as null
 	// strings.
 	{

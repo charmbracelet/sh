@@ -683,6 +683,9 @@ func (r *Runner) cmd(ctx context.Context, cm syntax.Command) {
 						valType = name
 					case "-g":
 						global = true
+					case "-Ag":
+						valType = name
+						global = true
 					default:
 						r.errf("declare: invalid option %q\n", name)
 						r.exit = 2

@@ -549,6 +549,7 @@ var shellOptsTable = [...]shellOpt{
 	{'u', "nounset"},
 	{'x', "xtrace"},
 	{' ', "pipefail"},
+	{'v', ""},
 }
 
 var bashOptsTable = [...]bashOpt{
@@ -605,7 +606,7 @@ var bashOptsTable = [...]bashOpt{
 	{name: "dotglob"},
 	{name: "execfail"},
 	{name: "extdebug"},
-	{name: "extglob"},
+	{name: "extglob", supported: true},
 	{
 		name:         "extquote",
 		defaultState: true,
@@ -623,6 +624,7 @@ var bashOptsTable = [...]bashOpt{
 	{
 		name:         "hostcomplete",
 		defaultState: true,
+		supported:    true,
 	},
 	{name: "huponexit"},
 	{
@@ -644,6 +646,7 @@ var bashOptsTable = [...]bashOpt{
 	{
 		name:         "progcomp",
 		defaultState: true,
+		supported:    true,
 	},
 	{name: "progcomp_alias"},
 	{

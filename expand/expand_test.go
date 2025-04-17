@@ -130,6 +130,10 @@ func Test_glob(t *testing.T) {
 	}
 }
 
+func Test_extglob(t *testing.T) {
+	t.Fail()
+}
+
 type mockFileInfo struct {
 	name        string
 	typ         fs.FileMode

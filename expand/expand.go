@@ -583,8 +583,16 @@ func (cfg *Config) wordField(wps []syntax.WordPart, ql quoteLevel) ([]fieldPart,
 				return nil, err
 			}
 			field = append(field, fieldPart{val: path})
+		// case *syntax.ExtGlob:
+		// 	field = append(field, fieldPart{val: wp.Pattern.Value})
+
+		// val, err := cfg.extglob(wp)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// field = append(field, fieldPart{val: val})
 		default:
-			panic(fmt.Sprintf("unhandled word part: %T", wp))
+			return nil, fmt.Errorf("unhandled word part: %T", wp)
 		}
 	}
 	return field, nil
@@ -716,8 +724,14 @@ func (cfg *Config) wordFields(wps []syntax.WordPart) ([][]fieldPart, error) {
 				return nil, err
 			}
 			splitAdd(path)
-		case *syntax.ExtGlob:
-			return nil, fmt.Errorf("extended globbing is not supported")
+		// case *syntax.ExtGlob:
+		// 	curField = append(curField, fieldPart{val: wp.Pattern.Value})
+
+		// val, err := cfg.extglob(wp)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// curField = append(curField, fieldPart{val: val})
 		default:
 			panic(fmt.Sprintf("unhandled word part: %T", wp))
 		}
@@ -1016,6 +1030,29 @@ func (cfg *Config) globDir(base, dir string, rx *regexp.Regexp, matchHidden bool
 		}
 	}
 	return matches, nil
+}
+
+func (cfg *Config) extglob(eg *syntax.ExtGlob) (string, error) {
+	expr, err := pattern.Regexp(eg.Pattern.Value, 0)
+	if err != nil {
+		return "", fmt.Errorf("unable to parse pattern matching: %w", err)
+	}
+	// r := regexp.MustCompile(expr)
+
+	switch eg.Op {
+	case syntax.GlobZeroOrOne: // ?(
+		return "", fmt.Errorf("extglob(TODO): %s - %s - %s", "GlobZeroOrOne", eg.Pattern.Value, expr)
+	case syntax.GlobZeroOrMore: // *(
+		return "", fmt.Errorf("extglob(TODO): %s - %s - %s", "GlobZeroOrMore", eg.Pattern.Value, expr)
+	case syntax.GlobOneOrMore: // +(
+		return "", fmt.Errorf("extglob(TODO): %s - %s - %s", "GlobOneOrMore", eg.Pattern.Value, expr)
+	case syntax.GlobOne: // @(
+		return "", fmt.Errorf("extglob(TODO): %s - %s - %s", "GlobOne", eg.Pattern.Value, expr)
+	case syntax.GlobExcept: // !(
+		return "", fmt.Errorf("extglob(TODO): %s - %s - %s", "GlobExcept", eg.Pattern.Value, expr)
+	}
+
+	panic("unreachable")
 }
 
 // ReadFields splits and returns n fields from s, like the "read" shell builtin.
